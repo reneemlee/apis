@@ -29,7 +29,6 @@ def show_afterparty_form():
 
     return render_template('search-form.html')
 
-
 @app.route('/afterparty/search')
 def find_afterparties():
     """Search for afterparties on Eventbrite"""
@@ -44,7 +43,7 @@ def find_afterparties():
     payload = {'apikey': API_KEY}
 
     # TODO: Make a request to the Event Search endpoint to search for events
-    #
+    
     # - Use form data from the user to populate any search parameters
     #
     # - Make sure to save the JSON data from the response to the `data`
@@ -53,10 +52,9 @@ def find_afterparties():
     #
     # - Replace the empty list in `events` with the list of events from your
     #   search results
-
-    data = {'Test': ['This is just some test data'],
-            'page': {'totalElements': 1}}
-    events = []
+    res = requests.get(url, params=payload)
+    data = res.json()
+    events = data['_embedded']['events']
 
     return render_template('search-results.html',
                            pformat=pformat,
@@ -75,6 +73,15 @@ def get_event_details(id):
 
     # TODO: Finish implementing this view function
 
+    name = event['name']
+    image = results['images']
+    dates = results['dates']
+    classifications = results['classifications']
+
+    for i in range(0,5):
+        eventName = melon_songs['_embedded'][i].get('name')
+        print(f'{eventName}')
+    
     return render_template('event-details.html')
 
 
